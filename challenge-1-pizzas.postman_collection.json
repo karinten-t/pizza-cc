@@ -1,0 +1,59 @@
+{
+  "info": {
+    "name": "Pizza Restaurant API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Restaurants",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/restaurants"
+      }
+    },
+    {
+      "name": "Get Restaurant by ID",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/restaurants/1"
+      }
+    },
+    {
+      "name": "Delete Restaurant",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/restaurants/1"
+      }
+    },
+    {
+      "name": "Get All Pizzas",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/pizzas"
+      }
+    },
+    {
+      "name": "Create RestaurantPizza",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/restaurant_pizzas",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"price\": 5, \"pizza_id\": 1, \"restaurant_id\": 3}"
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    }
+  ]
+}
