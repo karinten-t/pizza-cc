@@ -1,1 +1,177 @@
-Single-database configuration for Flask.
+Pizza Restaurant API Challenge
+This is a RESTful API for a Pizza Restaurant built using Flask, SQLAlchemy, and SQLite, following the MVC pattern.
+Setup Instructions
+
+Clone the repository:
+git clone https://github.com/karinten-t/pizza-cc.git
+cd pizza-cc.git
+
+
+Set up virtual environment:
+pipenv install flask flask_sqlalchemy flask_migrate
+pipenv shell
+
+
+Set Flask environment variable:
+export FLASK_APP=server/app.py
+
+
+Initialize database:
+flask db init
+flask db migrate -m "Initial migration"
+flask db upgrade
+
+
+Seed the database:
+python server/seed.py
+
+
+Run the application:
+flask run
+
+
+
+Database Migration & Seeding
+
+Migration: The database is managed using Flask-Migrate. Run flask db migrate -m "message" to create migrations and flask db upgrade to apply them.
+Seeding: The seed.py script populates the database with sample restaurants, pizzas, and restaurant-pizza relationships. Run python server/seed.py to seed the database.
+
+Route Summary
+
+
+
+Method
+Endpoint
+Description
+
+
+
+GET
+/restaurants
+Returns a list of all restaurants
+
+
+GET
+/restaurants/<id>
+Returns details of a restaurant and its pizzas
+
+
+DELETE
+/restaurants/<id>
+Deletes a restaurant and its related pizzas
+
+
+GET
+/pizzas
+Returns a list of all pizzas
+
+
+POST
+/restaurant_pizzas
+Creates a new restaurant-pizza relationship
+
+
+Example Requests & Responses
+GET /restaurants
+Response (200 OK):
+[
+  {
+    "id": 1,
+    "name": "Dominion Pizza",
+    "address": "123 Main St",
+    "restaurant_pizzas": [
+      {
+        "id": 1,
+        "price": 10,
+        "pizza_id": 1,
+        "restaurant_id": 1,
+        "pizza": { "id": 1, "name": "Margherita", "ingredients": "Dough, Tomato Sauce, Cheese, Basil" },
+        "restaurant": { "id": 1, "name": "Dominion Pizza", "address": "123 Main St" }
+      }
+    ]
+  }
+]
+
+GET /restaurants/
+Response (200 OK):
+{
+  "id": 1,
+  "name": "Dominion Pizza",
+  "address": "123 Main St",
+  "restaurant_pizzas": [...]
+}
+
+Error (404 Not Found):
+{ "error": "Restaurant not found" }
+
+DELETE /restaurants/
+Response (204 No Content): (No body)Error (404 Not Found):
+{ "error": "Restaurant not found" }
+
+GET /pizzas
+Response (200 OK):
+[
+  {
+    "id": 1,
+    "name": "Margherita",
+    "ingredients": "Dough, Tomato Sauce, Cheese, Basil"
+  },
+  ...
+]
+
+POST /restaurant_pizzas
+Request:
+{ "price": 5, "pizza_id": 1, "restaurant_id": 3 }
+
+Response (201 Created):
+{
+  "id": 4,
+  "price": 5,
+  "pizza_id": 1,
+  "restaurant_id": 3,
+  "pizza": { "id": 1, "name": "Margherita", "ingredients": "Dough, Tomato Sauce, Cheese, Basil" },
+  "restaurant": { "id": 3, "name": "Pizza Palace", "address": "789 Pine Rd" }
+}
+
+Error (400 Bad Request):
+{ "errors": ["Price must be between 1 and 30"] }
+
+Error (404 Not Found):
+{ "errors": ["Restaurant or Pizza not found"] }
+
+Validation Rules
+
+RestaurantPizza.price: Must be an integer between 1 and 30.
+RestaurantPizza.restaurant_id: Must reference an existing Restaurant.
+RestaurantPizza.pizza_id: Must reference an existing Pizza.
+
+Postman Usage Instructions
+
+Open Postman.
+Click Import and upload challenge-1-pizzas.postman_collection.json.
+Run the Flask server (flask run).
+Execute each request in the collection to test the API endpoints.
+Verify responses match the expected status codes and payloads.
+
+Project Structure
+pizza-cc/
+├── server/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── config.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── restaurant.py
+│   │   ├── pizza.py
+│   │   ├── restaurant_pizza.py
+│   ├── controllers/
+│   │   ├── __init__.py
+│   │   ├── restaurant_controller.py
+│   │   ├── pizza_controller.py
+│   │   ├── restaurant_pizza_controller.py
+│   ├── seed.py
+├── migrations/
+├── challenge-1-pizzas.postman_collection.json
+└── README.md
+
+
